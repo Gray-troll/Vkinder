@@ -4,6 +4,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import Session
 
+db_url_object = "postgresql+psycopg2://postgres:postgres@localhost:5432/netology"
 
 # схема БД
 metadata = MetaData()
@@ -17,7 +18,7 @@ class Viewed(Base):
 
 # добавление записи в бд
 
-engine = create_engine(db_url_object)
+engine = create_engine()
 Base.metadata.create_all(engine)
 with Session(engine) as session:
     to_bd = Viewed(profile_id=1, worksheet_id=1)
