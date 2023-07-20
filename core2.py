@@ -4,6 +4,11 @@ import vk_api
 
 from config import acces_token
 
+from DataBase import check
+
+
+
+
 
 
 class VkTools():
@@ -35,10 +40,13 @@ class VkTools():
         age = curent_year - user_year
         age_from = age - 5
         age_to = age + 5
+        offset = 0
+        """while offset < 10:
+            offset += 1"""
 
         users = self.api.method('users.search',
-                                {'count': 10,
-                                 'offset': 10,
+                                {'count': 50,
+                                 'offset': offset,
                                  'age_from': age_from,
                                  'age_to': age_to,
                                  'sex': sex,
@@ -53,15 +61,19 @@ class VkTools():
             return []
         
         res = []
-
+        global list_found_persons
+        list_found_persons = []
         for user in users:
             if user['is_closed'] == False:
                 res.append({'id' : user['id'],
                             'name': user['first_name'] + ' ' + user['last_name']
                            }
                            )
+                id_vk = user["id"]
+                list_found_persons.append(id_vk)
         
         return res
+        
 
     def get_photos(self, user_id):
         photos = self.api.method('photos.get',
@@ -75,23 +87,52 @@ class VkTools():
         except KeyError:
             return []
         
-        res = []
+        rres = []
 
         for photo in photos:
-            res.append({'owner_id': photo['owner_id'],
+            rres.append({'owner_id': photo['owner_id'],
                         'id': photo['id'],
                         'likes': photo['likes']['count'],
                         'comments': photo['comments']['count'],
                         }
                         )
             
-        res.sort(key=lambda x: x['likes']+x['comments']*10, reverse=True)
+        rres.sort(key=lambda x: x['likes']+x['comments']*10, reverse=True)
 
-        return res
+        return rres
+
+def check_in():
+        global unique_person_id, found_persons
+        seen_person = []
+        for i in check():  
+            seen_person.append(int(i[0]))
+        if not seen_person:
+            try:   
+                unique_person_id = list_found_persons[0]
+                return unique_person_id
+            except NameError:
+                found_persons = 0
+                return found_persons
+        else:
+            try:  
+                for ifp in list_found_persons:
+                    if ifp in seen_person:
+                        pass
+                    else:
+                        unique_person_id = ifp
+                        return unique_person_id
+            except NameError:
+                found_persons = 0
+                return found_persons
+
+   
+
 
 
 if __name__ == '__main__':
     bot = VkTools(acces_token)
     params = bot.get_profile_info(7123)
     users = bot.serch_users(params)
+    
     print(bot.get_photos(users[2]['id']))
+   

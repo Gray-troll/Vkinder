@@ -1,3 +1,3 @@
-comunity_token = 
-acces_token =
-db_url_object = "postgresql+psycopg2://postgres:postgres@localhost:5432/netology"
+comunity_token ="vk1.a.OdsMpiKFA_9xD6S0tOjcSZteHccj77zhnKtPiI55YMA-r_2S4WFSyVs4OF3cWWC6ozlT5xnUOFlj8lgYyH0vcEIrbvf9dD7jJsaNsmNV_5wQkoB3EVqntjPK3C35yDnjKEpVoyp1OnRWFTe7aXHzQqHpM4r8mzBKO8Qb45eLe5UlwpcaBXV-g39N6RaoBlIGHmmAx6bAJxrhzya8rMGegA" 
+acces_token = "vk1.a.wsGYJVQrYfvK7NHRhqzLFHQgVoHhhuDmXDM9Ac5RclocAJl5w0WL8RyohfWyYP6nkVA3PplD7-uYHb2DX0KCKfc3CExawE0EvRdRTfamO2INa3C8fNQk8mRXHhq_N9_UsZVYOQg7IpzVJPNtMPoa0RwpRUKjrli44uF7QqZcx_QK_NG1Bv4Bitj89mBlGXrzNKLspGKclEPch_jK-sYaXw"
+db_url_object = "postgresql+psycopg2://postgres:postgres@localhost:5432/Vkinder"

@@ -1,9 +1,10 @@
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
-
 from config import comunity_token, acces_token
-from core import VkTools
+from core2 import VkTools,check_in
+from DataBase import insert_data_seen_person 
+
 
 class BotInterface():
 
@@ -36,7 +37,8 @@ class BotInterface():
                 elif command == 'поиск':
                     users = self.api.serch_users(self.params)
                     user = users.pop()
-                    #здесь логика дял проверки бд
+                    print(check_in())
+                    
                     photos_user = self.api.get_photos(user['id'])                  
                     
                     attachment = ''
@@ -48,12 +50,22 @@ class BotInterface():
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       ) 
-                    #здесь логика для добавленяи в бд
+                    insert_data_seen_person(self,attachment['"owner_id"'])
+                            
+                    
                 elif command == 'пока':
                     self.message_send(event.user_id, 'пока')
                 else:
                     self.message_send(event.user_id, 'команда не опознана')
 
+    def show_found_person(self, user_id):
+        print(self.get_found_person_id())
+        if self.get_found_person_id() == None:
+            self.message_send(user_id,
+                          f'Все анекты ранее были просмотрены. Выполните новый поиск. '
+                          )
+        else:
+            insert_data_seen_person(self.get_found_person_id())    
 
 
 if __name__ == '__main__':
