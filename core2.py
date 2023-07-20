@@ -4,7 +4,7 @@ import vk_api
 
 from config import acces_token
 
-from DataBase import check
+
 
 
 
@@ -100,32 +100,7 @@ class VkTools():
         rres.sort(key=lambda x: x['likes']+x['comments']*10, reverse=True)
 
         return rres
-
-def check_in():
-        global unique_person_id, found_persons
-        seen_person = []
-        for i in check():  
-            seen_person.append(int(i[0]))
-        if not seen_person:
-            try:   
-                unique_person_id = list_found_persons[0]
-                return unique_person_id
-            except NameError:
-                found_persons = 0
-                return found_persons
-        else:
-            try:  
-                for ifp in list_found_persons:
-                    if ifp in seen_person:
-                        pass
-                    else:
-                        unique_person_id = ifp
-                        return unique_person_id
-            except NameError:
-                found_persons = 0
-                return found_persons
-
-   
+    
 
 
 
@@ -133,6 +108,6 @@ if __name__ == '__main__':
     bot = VkTools(acces_token)
     params = bot.get_profile_info(7123)
     users = bot.serch_users(params)
+    print(bot.get_photos(users[2]["id"]))
     
-    print(bot.get_photos(users[2]['id']))
-   
+

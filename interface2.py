@@ -2,8 +2,9 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 from config import comunity_token, acces_token
-from core2 import VkTools,check_in
-from DataBase import insert_data_seen_person 
+from core2 import VkTools
+from core3 import check_in,ins_data
+
 
 
 class BotInterface():
@@ -50,7 +51,7 @@ class BotInterface():
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       ) 
-                    insert_data_seen_person(self,attachment['"owner_id"'])
+                    ins_data()
                             
                     
                 elif command == 'пока':
@@ -58,14 +59,15 @@ class BotInterface():
                 else:
                     self.message_send(event.user_id, 'команда не опознана')
 
-    def show_found_person(self, user_id):
-        print(self.get_found_person_id())
+    """def show_found_person(self):
+        print(bot.serch_users(params))
         if self.get_found_person_id() == None:
             self.message_send(user_id,
                           f'Все анекты ранее были просмотрены. Выполните новый поиск. '
                           )
         else:
-            insert_data_seen_person(self.get_found_person_id())    
+            ins_data(self.get_found_person_id())
+            """
 
 
 if __name__ == '__main__':
