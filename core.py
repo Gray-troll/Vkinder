@@ -38,7 +38,7 @@ class VkTools():
 
         users = self.api.method('users.search',
                                 {'count': 10,
-                                 'offset': 0,
+                                 'offset': 10,
                                  'age_from': age_from,
                                  'age_to': age_to,
                                  'sex': sex,
