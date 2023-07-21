@@ -3,7 +3,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 from config import comunity_token, acces_token
 from core2 import VkTools
-from core3 import check_in,ins_data
+from DataBase import insert_data_seen_person,delete_table_seen_person
 
 
 
@@ -37,11 +37,16 @@ class BotInterface():
                     self.message_send(event.user_id, f'здравствуй {self.params["name"]}')
                 elif command == 'поиск':
                     users = self.api.serch_users(self.params)
-                    user = users.pop()
-                    print(check_in())
+                    ind=len(users)
+                    ind-=1
+                    user = users.pop(ind)
+                                      
                     
                     photos_user = self.api.get_photos(user['id'])                  
                     
+                
+                
+                   
                     attachment = ''
                     for num, photo in enumerate(photos_user):
                         attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
@@ -51,11 +56,31 @@ class BotInterface():
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       ) 
-                    ins_data()
-                            
                     
+                    insert_data_seen_person(id_vk=user['id'])
+
+                elif command == 'дальше':
+                    ind-=1 
+                    user = users.pop(ind)   
+                    photos_user = self.api.get_photos(user['id'])                  
+                                            
+                    attachment = ''
+                    for num, photo in enumerate(photos_user):
+                        attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
+                        if num == 2:
+                            break
+                    self.message_send(event.user_id,
+                                      f'Встречайте {user["name"]}',
+                                      attachment=attachment
+                                      )        
+                    if ind<0:
+                     self.message_send(event.user_id,   
+                                       f'Все анкеты просмотренны. Выполните новый поиск ',
+                                       attachment=None
+                                       )
                 elif command == 'пока':
                     self.message_send(event.user_id, 'пока')
+                    delete_table_seen_person()
                 else:
                     self.message_send(event.user_id, 'команда не опознана')
 
@@ -73,3 +98,16 @@ class BotInterface():
 if __name__ == '__main__':
     bot = BotInterface(comunity_token, acces_token)
     bot.event_handler()
+""" vkid=[]
+                    for photo in photos_user:
+                        id_vk=photo["owner_id"]
+                        vkid.append(photo["owner_id"])
+                        insert_data_seen_person(id_vk)"""
+""""photo_user=[]
+                    for i in check():
+                        photo_user.append(int(i[0]))"""
+                    
+"""max_count=len(photo_user)
+                    for index in range(len(photo_user)):
+                            value = photo_user[index]
+                            return value """
