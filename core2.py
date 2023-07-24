@@ -4,15 +4,6 @@ import vk_api
 
 from config import acces_token
 
-
-
-
-
-
-
-
-
-
 class VkTools():
     def __init__(self, acces_token):
        self.api = vk_api.VkApi(token=acces_token)
@@ -47,7 +38,7 @@ class VkTools():
                 offset += 1
 
         users = self.api.method('users.search',
-                                {'count': 50,
+                                {'count': 5,
                                  'offset': offset,
                                  'age_from': age_from,
                                  'age_to': age_to,
@@ -103,19 +94,6 @@ class VkTools():
 
         return rres
     
-
-    
-    
-        
-
-    """photo_data=[]
-    final_list = get_photos(users[2]["id"])
-    for list in final_list:
-        photo_data.append({'id_vk': list['owner_id'],
-                        'photo_id': list['id']})"""
-
-
-
 if __name__ == '__main__':
     bot = VkTools(acces_token)
     params = bot.get_profile_info(7123)

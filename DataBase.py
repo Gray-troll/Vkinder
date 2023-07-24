@@ -30,7 +30,6 @@ def check():
         return cursor.fetchall()
 
 def delete_table_seen_person():
-    """delete table seen_person by cascade"""
     with conn.cursor() as cursor:
         cursor.execute(
             """DROP TABLE  IF EXISTS seen_person CASCADE;"""
