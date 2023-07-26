@@ -38,7 +38,7 @@ class VkTools():
                 offset += 1
 
         users = self.api.method('users.search',
-                                {'count': 5,
+                                {'count': 10,
                                  'offset': offset,
                                  'age_from': age_from,
                                  'age_to': age_to,

@@ -39,6 +39,7 @@ class BotInterface():
                     else:
                              
                         users = self.api.serch_users(self.params)
+                        print('вот что нашли')
                         print(users)
                         Veiwed = []
                         for row in check():                                                
@@ -58,7 +59,9 @@ class BotInterface():
                                               
                         
                         if len(users)>0:
+                            print('вот что осталось')
                             user = users.pop()
+                            index=len(users)
                     
                             photos_user = self.api.get_photos(user['id'])                  
                    
@@ -76,6 +79,7 @@ class BotInterface():
                             print(id_vk)
                             print(user_name)
                             insert_data_seen_person(id_vk)
+                            
                         else:
                             self.message_send(event.user_id,   
                                        f'никого нет. попробуйте еще раз ',
@@ -85,6 +89,7 @@ class BotInterface():
                              
 
                 elif command == 'дальше':
+                    print(index)
                     user = users.pop()
                     index-=1   
                     photos_user = self.api.get_photos(user['id'])                  
@@ -98,7 +103,7 @@ class BotInterface():
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       )        
-                    if index==0:
+                    if index==1:
                      self.message_send(event.user_id,   
                                        f'Все анкеты просмотренны. Выполните новый поиск ',
                                        attachment=None
