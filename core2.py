@@ -99,6 +99,7 @@ if __name__ == '__main__':
     params = bot.get_profile_info(7123)
     users = bot.serch_users(params)
     print(bot.get_photos(users[2]["id"]))
+    
    
    
     

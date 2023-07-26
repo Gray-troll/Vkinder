@@ -3,7 +3,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 from config import comunity_token, acces_token
 from core2 import VkTools
-from DataBase import insert_data_seen_person,delete_table_seen_person
+from DataBase import insert_data_seen_person,delete_table_seen_person,check,insert_data_seen
 
 class BotInterface():
 
@@ -39,6 +39,24 @@ class BotInterface():
                     else:
                              
                         users = self.api.serch_users(self.params)
+                        Veiwed = []
+                        for row in check():                                                
+                            Veiwed.append(row)
+                        print(Veiwed)    
+                        View=len(Veiwed)
+                        if View !=0:
+                                    
+                                    for user in users:
+                                            userid=user['id']
+                                            for names in Veiwed:
+                                                    named=int(names[1])
+                                                    if userid==named:
+                                                        users.remove(user)
+                                
+                                                                  
+                                                            
+
+
                         index=len(users)
                         index-=1
                         user = users.pop(index)
@@ -54,8 +72,13 @@ class BotInterface():
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       ) 
-                    
-                        insert_data_seen_person(id_vk=user['id'])
+                        id_vk=user["id"]
+                        user_name=user["name"]
+                        print(id_vk)
+                        print(user_name)
+                        insert_data_seen_person(id_vk)
+                        insert_data_seen(user_name)
+                             
 
                 elif command == 'дальше':
                     index-=1 
