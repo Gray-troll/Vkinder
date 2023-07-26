@@ -3,7 +3,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 from config import comunity_token, acces_token
 from core2 import VkTools
-from DataBase import insert_data_seen_person,delete_table_seen_person,check,insert_data_seen
+from DataBase import insert_data_seen_person,delete_table_seen_person,check
 
 class BotInterface():
 
@@ -39,50 +39,54 @@ class BotInterface():
                     else:
                              
                         users = self.api.serch_users(self.params)
+                        print(users)
                         Veiwed = []
                         for row in check():                                                
-                            Veiwed.append(row)
+                            Veiwed.append(int(row[1]))
                         print(Veiwed)    
                         View=len(Veiwed)
+                        count=len(users)
                         if View !=0:
-                                    
-                                    for user in users:
-                                            userid=user['id']
-                                            for names in Veiwed:
-                                                    named=int(names[1])
-                                                    if userid==named:
-                                                        users.remove(user)
-                                
-                                                                  
-                                                            
-
-
-                        index=len(users)
-                        index-=1
-                        user = users.pop(index)
+                            while count>0:
+                                for user in users:
+                                    if user['id'] in Veiwed:
+                                        users.remove(user)
+                                    count-=1
+                                    print(users)
+                                    print(count)
+                                   
+                                              
+                        
+                        if len(users)>0:
+                            user = users.pop()
                     
-                        photos_user = self.api.get_photos(user['id'])                  
+                            photos_user = self.api.get_photos(user['id'])                  
                    
-                        attachment = ''
-                        for num, photo in enumerate(photos_user):
-                            attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
-                            if num == 2:
-                                break
-                        self.message_send(event.user_id,
+                            attachment = ''
+                            for num, photo in enumerate(photos_user):
+                                attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
+                                if num == 2:
+                                    break
+                            self.message_send(event.user_id,
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
                                       ) 
-                        id_vk=user["id"]
-                        user_name=user["name"]
-                        print(id_vk)
-                        print(user_name)
-                        insert_data_seen_person(id_vk)
-                        insert_data_seen(user_name)
+                            id_vk=user["id"]
+                            user_name=user["name"]
+                            print(id_vk)
+                            print(user_name)
+                            insert_data_seen_person(id_vk)
+                        else:
+                            self.message_send(event.user_id,   
+                                       f'никого нет. попробуйте еще раз ',
+                                       attachment=None
+                                       )
+                        
                              
 
                 elif command == 'дальше':
-                    index-=1 
-                    user = users.pop(index)   
+                    user = users.pop()
+                    index-=1   
                     photos_user = self.api.get_photos(user['id'])                  
                                             
                     attachment = ''

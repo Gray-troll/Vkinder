@@ -10,9 +10,8 @@ def create_table_seen_person():
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS seen_person(
             id serial NOT NULL,
-            id_vk varchar(50) PRIMARY KEY,
-            user_name varchar(50));
-            """
+            id_vk varchar(50) PRIMARY KEY
+            )"""
         )
 
 def insert_data_seen_person(id_vk):
@@ -22,13 +21,14 @@ def insert_data_seen_person(id_vk):
            VALUES (%s)""",
             (id_vk,)
             )
-def insert_data_seen(user_name):
+'''def insert_data_seen(user_name):
     with conn.cursor() as cursor:
         cursor.execute(
             f"""INSERT INTO seen_person (user_name) 
            VALUES (%s)""",
             (user_name,)
-            )      
+            )'''
+                 
 
 def check():
     check_data="SELECT * FROM seen_person"
@@ -45,6 +45,8 @@ def delete_table_seen_person():
             """DROP TABLE  IF EXISTS seen_person CASCADE;"""
         )
 
+'''print(delete_table_seen_person)'''
 create_table_seen_person()
 print("Database was created!")
+
 
