@@ -4,9 +4,11 @@ import vk_api
 
 from config import acces_token
 
+
 class VkTools():
     def __init__(self, acces_token):
        self.api = vk_api.VkApi(token=acces_token)
+       
 
     def get_profile_info(self, user_id):
 
@@ -24,21 +26,21 @@ class VkTools():
                      }
         return user_info
     
-    def serch_users(self, params):
 
-        sex = 1 if params['sex'] == 2 else 2
+
+    def serch_users(self, params):
+        sex = 1 if params['sex'] == 2 else 2     
         city = params['city']
         curent_year = datetime.now().year
         user_year = int(params['bdate'].split('.')[2])
         age = curent_year - user_year
         age_from = age - 5
         age_to = age + 5
-        offset = 0
-        while offset < 10:
-                offset += 1
-
+        
+        offset = 10
+        
         users = self.api.method('users.search',
-                                {'count': 5,
+                                {'count': 50,
                                  'offset': offset,
                                  'age_from': age_from,
                                  'age_to': age_to,
@@ -52,7 +54,8 @@ class VkTools():
             users = users['items']
         except KeyError:
             return []
-        
+        offset+=10
+  
         res = []
         global list_found_persons
         list_found_persons = []
@@ -66,7 +69,7 @@ class VkTools():
                 list_found_persons.append(id_vk)
         
         return res
-        
+          
 
     def get_photos(self, user_id):
         photos = self.api.method('photos.get',
@@ -94,11 +97,13 @@ class VkTools():
 
         return rres
     
+    
 if __name__ == '__main__':
     bot = VkTools(acces_token)
     params = bot.get_profile_info(7123)
     users = bot.serch_users(params)
     print(bot.get_photos(users[2]["id"]))
+    
    
    
     
