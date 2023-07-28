@@ -31,8 +31,17 @@ class BotInterface():
 
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
-                    self.message_send(event.user_id, f'здравствуй {self.params["name"]}')
-                    
+                    self.message_send(event.user_id, f'здравствуй {self.params["name"]}.кого ищем:введите "м или ж"')
+                    print(self.params)
+                
+                elif command == 'м':
+                    self.params['sex']=1
+                    self.message_send(event.user_id, f'ну давай искать. пиши "поиск')
+
+                elif command == 'ж':
+                    self.params['sex']=2
+                    self.message_send(event.user_id, f'ну давай искать. пиши "поиск')    
+                       
                 elif command == 'поиск':
                     if self.params == None:
                         self.message_send(event.user_id, 'давайте сперва познакомимся. введите команду"привет"')
@@ -48,20 +57,25 @@ class BotInterface():
                         View=len(Veiwed)
                         count=len(users)
                         if View !=0:
-                            while count>0:
-                                for user in users:
-                                    if user['id'] in Veiwed:
-                                        users.remove(user)
-                                    count-=1
-                                    print(users)
-                                    print(count)
+                            while True:
+                                if count>0:
+                                    for user in users:
+                                        if user['id'] in Veiwed:
+                                            users.remove(user)
+                                        count-=1
+                                else:
+                                    break        
+                        print(users)
+                        print(count)
                                    
                                               
                         
                         if len(users)>0:
                             print('вот что осталось')
+                            print(users)
                             user = users.pop()
                             index=len(users)
+                            print(index)
                     
                             photos_user = self.api.get_photos(user['id'])                  
                    
@@ -90,24 +104,26 @@ class BotInterface():
 
                 elif command == 'дальше':
                     print(index)
-                    user = users.pop()
-                    index-=1   
-                    photos_user = self.api.get_photos(user['id'])                  
-                                            
-                    attachment = ''
-                    for num, photo in enumerate(photos_user):
-                        attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
-                        if num == 2:
-                            break
-                    self.message_send(event.user_id,
-                                      f'Встречайте {user["name"]}',
-                                      attachment=attachment
-                                      )        
-                    if index==1:
+                    if index<=1:
                      self.message_send(event.user_id,   
                                        f'Все анкеты просмотренны. Выполните новый поиск ',
                                        attachment=None
                                        )
+                    else:
+                        user = users.pop()
+                        index-=1   
+                        photos_user = self.api.get_photos(user['id'])                  
+                                            
+                        attachment = ''
+                        for num, photo in enumerate(photos_user):
+                            attachment += f'photo{photo["owner_id"]}_{photo["id"]}'
+                            if num == 2:
+                                break
+                        self.message_send(event.user_id,
+                                      f'Встречайте {user["name"]}',
+                                      attachment=attachment
+                                      )        
+                    
                 elif command == 'пока':
                     self.message_send(event.user_id, 'пока')
                     delete_table_seen_person()

@@ -21,13 +21,7 @@ def insert_data_seen_person(id_vk):
            VALUES (%s)""",
             (id_vk,)
             )
-'''def insert_data_seen(user_name):
-    with conn.cursor() as cursor:
-        cursor.execute(
-            f"""INSERT INTO seen_person (user_name) 
-           VALUES (%s)""",
-            (user_name,)
-            )'''
+
                  
 
 def check():
