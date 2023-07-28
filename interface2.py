@@ -7,11 +7,11 @@ from DataBase import insert_data_seen_person,delete_table_seen_person,check
 
 class BotInterface():
 
+
     def __init__(self,comunity_token, acces_token):
         self.interface = vk_api.VkApi(token=comunity_token)
         self.api = VkTools(acces_token)
         self.params = None
-
 
     def message_send(self, user_id, message, attachment=None):
         self.interface.method('messages.send',
@@ -31,22 +31,25 @@ class BotInterface():
 
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
-                    self.message_send(event.user_id, f'здравствуй {self.params["name"]}.кого ищем:введите "м или ж"')
+                    self.message_send(event.user_id, 
+                                      f'здравствуй {self.params["name"]}.кого ищем:введите "м или ж"')
                     print(self.params)
                 
                 elif command == 'м':
                     self.params['sex']=1
-                    self.message_send(event.user_id, f'ну давай искать. пиши "поиск')
+                    self.message_send(event.user_id, 
+                                      f'ну давай искать. пиши "поиск')
 
                 elif command == 'ж':
                     self.params['sex']=2
-                    self.message_send(event.user_id, f'ну давай искать. пиши "поиск')    
+                    self.message_send(event.user_id, 
+                                      f'ну давай искать. пиши "поиск')    
                        
                 elif command == 'поиск':
                     if self.params == None:
-                        self.message_send(event.user_id, 'давайте сперва познакомимся. введите команду"привет"')
+                        self.message_send(event.user_id, 
+                                          f'давайте сперва познакомимся. введите команду"привет"')
                     else:
-                             
                         users = self.api.serch_users(self.params)
                         print('вот что нашли')
                         print(users)
@@ -67,8 +70,6 @@ class BotInterface():
                                     break        
                         print(users)
                         print(count)
-                                   
-                                              
                         
                         if len(users)>0:
                             print('вот что осталось')
@@ -87,7 +88,8 @@ class BotInterface():
                             self.message_send(event.user_id,
                                       f'Встречайте {user["name"]}',
                                       attachment=attachment
-                                      ) 
+                                      )
+                             
                             id_vk=user["id"]
                             user_name=user["name"]
                             print(id_vk)
@@ -125,10 +127,12 @@ class BotInterface():
                                       )        
                     
                 elif command == 'пока':
-                    self.message_send(event.user_id, 'пока')
+                    self.message_send(event.user_id, 
+                                      f'пока')
                     delete_table_seen_person()
                 else:
-                    self.message_send(event.user_id, 'команда не опознана')
+                    self.message_send(event.user_id, 
+                                      f'команда не опознана')
              
 if __name__ == '__main__':
     bot = BotInterface(comunity_token, acces_token)

@@ -36,9 +36,8 @@ class VkTools():
         age = curent_year - user_year
         age_from = age - 5
         age_to = age + 5
-        
         offset = 10
-        
+
         users = self.api.method('users.search',
                                 {'count': 50,
                                  'offset': offset,
@@ -67,7 +66,6 @@ class VkTools():
                            )
                 id_vk = user["id"]
                 list_found_persons.append(id_vk)
-        
         return res
           
 
