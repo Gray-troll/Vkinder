@@ -49,6 +49,17 @@ class BotInterface():
                     if self.params == None:
                         self.message_send(event.user_id, 
                                           f'давайте сперва познакомимся. введите команду"привет"')
+                    
+                    elif self.params['city']== None:
+                        self.message_send(event.user_id, 
+                                          f'как называется город в котором вы проживаете?')
+                        self.params['city']= command
+                    
+                    elif self.params['age']== None:
+                        self.message_send(event.user_id, 
+                                          f'напишите свой возраст цифрами')
+                        self.params['age']= int(command)
+
                     else:
                         users = self.api.serch_users(self.params)
                         print('вот что нашли')
